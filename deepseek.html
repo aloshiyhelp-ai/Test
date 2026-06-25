@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=yes">
+  <title>WebCraft | Премиальная разработка сайтов</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- CSS Variables ----- */
+    :root {
+      --primary: #6c5ce7;
+      --primary-light: #a29bfe;
+      --primary-dark: #4a3db5;
+      --accent: #00cec9;
+      --accent-glow: rgba(0, 206, 201, 0.4);
+      --bg-dark: #0c0b1d;
+      --bg-section: #12102a;
+      --card-bg: rgba(25, 23, 47, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f1f1f5;
+      --text-secondary: #b4b4c6;
+      --text-muted: #78788c;
+      --shadow-sm: 0 8px 32px rgba(0,0,0,0.25);
+      --shadow-glow: 0 0 25px rgba(108, 92, 231, 0.5);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+      --transition: 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ----- Glassmorphism utility ----- */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* ----- Typography ----- */
+    h1, h2, h3 {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      margin-bottom: 1.2rem;
+      background: linear-gradient(135deg, #ffffff 0%, #d1d0e0 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      text-align: center;
+    }
+
+    /* ----- Buttons & CTAs ----- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0.9rem 2.2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 60px;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      background: transparent;
+      color: white;
+      position: relative;
+      z-index: 1;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      box-shadow: 0 10px 25px -8px var(--primary);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+      box-shadow: 0 15px 30px -6px var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .btn-outline {
+      border: 1.5px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+    }
+
+    /* ----- Header (fixed, glass) ----- */
+    .header {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 1200px;
+      z-index: 100;
+      padding: 15px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(18, 16, 42, 0.65);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 80px;
+      transition: all 0.3s ease;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.7rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, #ffffff, #b9b5f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.25s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    /* ----- Hero Section ----- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 120px 0 80px;
+      background: radial-gradient(circle at 30% 40%, rgba(108,92,231,0.18) 0%, transparent 55%);
+      overflow: hidden;
+    }
+
+    .hero-bg-img {
+      position: absolute;
+      right: -10%;
+      top: 15%;
+      width: 55%;
+      opacity: 0.2;
+      pointer-events: none;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><defs><linearGradient id="grad" x1="0%25" y1="0%25" x2="100%25" y2="100%25"><stop offset="0%25" stop-color="%236c5ce7"/><stop offset="100%25" stop-color="%2300cec9"/></linearGradient></defs><path fill="none" stroke="url(%23grad)" stroke-width="2" d="M400 100 L700 300 L650 650 L350 750 L50 500 Z" opacity="0.5"/><circle cx="400" cy="400" r="180" fill="none" stroke="%236c5ce7" stroke-width="1.5" opacity="0.4"/></svg>') no-repeat center/contain;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.2rem, 9vw, 5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #f0f0ff, #c4b5fd, #a5f3fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      max-width: 550px;
+    }
+
+    /* ----- Sections common ----- */
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    /* ----- Advantages grid (6 cards) ----- */
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+    }
+
+    .adv-card {
+      padding: 32px 20px;
+      text-align: center;
+      transition: all 0.35s ease;
+      background: rgba(22, 20, 40, 0.6);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .adv-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(108,92,231,0.4);
+      box-shadow: 0 25px 40px -15px rgba(108,92,231,0.3);
+    }
+
+    .adv-icon {
+      font-size: 2.4rem;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .adv-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    /* ----- Services ----- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    .service-item {
+      padding: 40px 28px;
+      transition: all 0.3s;
+    }
+
+    .service-item i {
+      font-size: 2.2rem;
+      color: var(--primary-light);
+      margin-bottom: 24px;
+    }
+
+    /* ----- Gallery ----- */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .gallery-item {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      height: 260px;
+      background: linear-gradient(145deg, #2d2a4a, #1b1935);
+      position: relative;
+      transition: 0.4s;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.02);
+      box-shadow: 0 25px 35px -10px var(--primary);
+    }
+
+    .gallery-img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ----- About & Team mixed ----- */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 28px;
+      margin-top: 40px;
+    }
+
+    .member-card {
+      text-align: center;
+      padding: 28px 15px;
+    }
+
+    .avatar {
+      width: 85px;
+      height: 85px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+    }
+
+    /* ----- Testimonials ----- */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .testimonial {
+      padding: 32px 26px;
+    }
+
+    /* ----- FAQ accordion ----- */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: rgba(20, 18, 38, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .faq-question {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 22px 28px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+      background: rgba(0,0,0,0.2);
+      padding: 0 28px;
+      color: var(--text-secondary);
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      padding: 20px 28px;
+    }
+
+    /* ----- Contact form + info ----- */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      color: white;
+      font-family: inherit;
+      margin-bottom: 18px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .form-group textarea {
+      border-radius: 28px;
+      resize: vertical;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 18px rgba(108,92,231,0.3);
+    }
+
+    /* ----- Footer ----- */
+    .footer {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 20px;
+        top: 10px;
+        width: 95%;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        background: rgba(10,8,22,0.9);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        padding: 20px;
+        gap: 20px;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .mobile-menu-toggle {
+        display: block;
+      }
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .hero-bg-img {
+        opacity: 0.1;
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <i class="fas fa-cube"></i> WebCraft
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#hero">Главная</a>
+      <a href="#advantages">Преимущества</a>
+      <a href="#services">Услуги</a>
+      <a href="#gallery">Работы</a>
+      <a href="#about">О компании</a>
+      <a href="#team">Команда</a>
+      <a href="#testimonials">Отзывы</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+    <button class="mobile-menu-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="hero-bg-img"></div>
+      <div class="container">
+        <div class="hero-content fade-up">
+          <h1>Создаём цифровые продукты, которые приносят результат</h1>
+          <p>Премиальная веб-разработка для бизнеса. Дизайн, код и стратегия — в одном флаконе.</p>
+          <div style="display: flex; gap: 18px; flex-wrap: wrap;">
+            <a href="#contact" class="btn btn-primary"><i class="fas fa-rocket"></i> Обсудить проект</a>
+            <a href="#gallery" class="btn btn-outline"><i class="fas fa-arrow-down"></i> Портфолио</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Advantages 6 cards -->
+    <section id="advantages">
+      <div class="container">
+        <div class="section-header fade-up">
+          <h2>Почему выбирают нас</h2>
+          <p class="section-subtitle">6 причин начать сотрудничество уже сегодня</p>
+        </div>
+        <div class="advantages-grid">
+          <div class="adv-card fade-up"><i class="fas fa-bolt adv-icon"></i><h3>Скорость</h3><p>Оптимизация до 95+ PageSpeed</p></div>
+          <div class="adv-card fade-up"><i class="fas fa-mobile-alt adv-icon"></i><h3>Адаптивность</h3><p>Идеально на всех устройствах</p></div>
+          <div class="adv-card fade-up"><i class="fas fa-lock adv-icon"></i><h3>Безопасность</h3><p>Защита данных и SSL</p></div>
+          <div class="adv-card fade-up"><i class="fas fa-paint-brush adv-icon"></i><h3>Дизайн</h3><p>Уровень Webflow и премиум</p></div>
+          <div class="adv-card fade-up"><i class="fas fa-chart-line adv-icon"></i><h3>Конверсия</h3><p>Продуманные CTA и юзабилити</p></div>
+          <div class="adv-card fade-up"><i class="fas fa-headset adv-icon"></i><h3>Поддержка</h3><p>24/7 после запуска</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" style="background: radial-gradient(circle at 70% 20%, rgba(0,206,201,0.08), transparent 60%);">
+      <div class="container">
+        <div class="section-header fade-up"><h2>Услуги</h2><p class="section-subtitle">Полный цикл разработки</p></div>
+        <div class="services-grid">
+          <div class="glass-card service-item fade-up"><i class="fas fa-code"></i><h3>Веб-разработка</h3><p>Современные SPA, лендинги, корпоративные порталы.</p></div>
+          <div class="glass-card service-item fade-up"><i class="fas fa-palette"></i><h3>UI/UX Дизайн</h3><p>Прототипирование, вайрфреймы, дизайн-системы.</p></div>
+          <div class="glass-card service-item fade-up"><i class="fas fa-shopping-cart"></i><h3>E-commerce</h3><p>Интернет-магазины с высокой конверсией.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery">
+      <div class="container">
+        <div class="section-header fade-up"><h2>Избранные работы</h2></div>
+        <div class="gallery-grid">
+          <div class="gallery-item fade-up"><div class="gallery-img-placeholder"><i class="fas fa-image"></i> FinTech App</div></div>
+          <div class="gallery-item fade-up"><div class="gallery-img-placeholder"><i class="fas fa-image"></i> Luxury Brand</div></div>
+          <div class="gallery-item fade-up"><div class="gallery-img-placeholder"><i class="fas fa-image"></i> SaaS Platform</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About + Team combined block -->
+    <section id="about">
+      <div class="container">
+        <div class="section-header fade-up"><h2>О компании</h2><p class="section-subtitle">Более 5 лет создаём цифровые решения для бизнеса</p></div>
+        <div style="max-width: 700px; margin: 0 auto 60px; text-align: center; color: var(--text-secondary);" class="fade-up">
+          Мы объединяем стратегию, дизайн и технологии. Наша миссия — делать веб-продукты, которые выделяются и приносят прибыль.
+        </div>
+        <div id="team">
+          <div class="section-header fade-up"><h2>Команда специалистов</h2></div>
+          <div class="team-grid">
+            <div class="glass-card member-card fade-up"><div class="avatar"><i class="fas fa-user-tie"></i></div><h4>Алексей</h4><p>CTO</p></div>
+            <div class="glass-card member-card fade-up"><div class="avatar"><i class="fas fa-laptop-code"></i></div><h4>Мария</h4><p>Senior Dev</p></div>
+            <div class="glass-card member-card fade-up"><div class="avatar"><i class="fas fa-pencil-ruler"></i></div><h4>Дмитрий</h4><p>UI/UX</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+      <div class="container">
+        <div class="section-header fade-up"><h2>Отзывы клиентов</h2></div>
+        <div class="testimonials-grid">
+          <div class="glass-card testimonial fade-up"><i class="fas fa-star" style="color: gold;"></i><p>«Перевыполнили ожидания. Сайт увеличил конверсию на 40%»</p><strong>— Ольга, CEO</strong></div>
+          <div class="glass-card testimonial fade-up"><i class="fas fa-star" style="color: gold;"></i><p>«Команда профессионалов, сдали проект раньше срока»</p><strong>— Иван, TechLead</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="section-header fade-up"><h2>Частые вопросы</h2></div>
+        <div class="faq-list">
+          <div class="faq-item fade-up">
+            <button class="faq-question">Сколько стоит разработка? <i class="fas fa-chevron-down"></i></button>
+            <div class="faq-answer">Стоимость рассчитывается индивидуально. От 150 000 ₽ за лендинг.</div>
+          </div>
+          <div class="faq-item fade-up">
+            <button class="faq-question">Какие сроки? <i class="fas fa-chevron-down"></i></button>
+            <div class="faq-answer">От 2 недель до 2 месяцев в зависимости от сложности.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact form + контакты -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-header fade-up"><h2>Свяжитесь с нами</h2></div>
+        <div class="contact-wrapper">
+          <div class="glass-card fade-up" style="padding: 36px 28px;">
+            <form id="contactForm">
+              <div class="form-group"><input type="text" placeholder="Ваше имя" required></div>
+              <div class="form-group"><input type="email" placeholder="Email" required></div>
+              <div class="form-group"><textarea rows="4" placeholder="Сообщение"></textarea></div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">Отправить заявку</button>
+            </form>
+          </div>
+          <div class="fade-up" style="display: flex; flex-direction: column; gap: 24px; justify-content: center;">
+            <div><i class="fas fa-phone-alt" style="color:var(--accent); margin-right:10px;"></i> +7 (999) 123-45-67</div>
+            <div><i class="fas fa-envelope" style="color:var(--accent); margin-right:10px;"></i> hello@webcraft.ru</div>
+            <div><i class="fas fa-map-marker-alt" style="color:var(--accent); margin-right:10px;"></i> Москва, Цифровой квартал</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© 2025 WebCraft. Премиальная веб-разработка.</div>
+  </footer>
+
+  <script>
+    (function() {
+      // Mobile menu toggle
+      const toggle = document.getElementById('mobileToggle');
+      const nav = document.getElementById('navLinks');
+      if (toggle && nav) {
+        toggle.addEventListener('click', () => {
+          nav.classList.toggle('active');
+        });
+        // Close menu on link click
+        nav.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => nav.classList.remove('active'));
+        });
+      }
+
+      // Scroll reveal animation
+      const fadeElements = document.querySelectorAll('.fade-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      fadeElements.forEach(el => observer.observe(el));
+
+      // FAQ accordion
+      document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.faq-item');
+          item.classList.toggle('active');
+          // Close others optionally
+          document.querySelectorAll('.faq-item').forEach(other => {
+            if (other !== item) other.classList.remove('active');
+          });
+        });
+      });
+
+      // Smooth scroll for anchor links (native via css scroll-behavior, but reinforce)
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href === "#" || !href) return;
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+
+      // Form prevent default
+      const form = document.getElementById('contactForm');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          alert('Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.');
+          form.reset();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
