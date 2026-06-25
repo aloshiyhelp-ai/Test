@@ -1,89 +1,47 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semeyniy - Onlayn Do'kon</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Food Delivery Clone</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="header">
-        <div class="container header-content">
-            <a href="#" class="logo">🛒 Semeyniy</a>
-            <div class="search-bar">
-                <input type="text" placeholder="Mahsulotlarni qidirish...">
-                <button>Qidirish</button>
-            </div>
-            <div class="cart">
-                <span>Savatcha: </span>
-                <strong>0 so'm</strong>
-            </div>
-        </div>
-    </header>
+<header>
+  <h2>🍽 Restaurant Menu</h2>
+</header>
 
-    <section class="banner">
-        <div class="container">
-            <h1>Oziq-ovqat va uy ro'zg'or buyumlari</h1>
-            <p>Uyingizgacha tez va ishonchli yetkazib beramiz!</p>
-        </div>
-    </section>
+<!-- Categories -->
+<div class="categories">
+  <button onclick="filter('all')">Hammasi</button>
+  <button onclick="filter('salat')">Salatlar</button>
+  <button onclick="filter('sup')">Sup</button>
+  <button onclick="filter('hot')">Issiq ovqat</button>
+</div>
 
-    <nav class="categories container">
-        <a href="#" class="active">Barchasi</a>
-        <a href="#">Ichimliklar</a>
-        <a href="#">Shirinliklar</a>
-        <a href="#">Mevalar va Sabzavotlar</a>
-        <a href="#">Go'sht mahsulotlari</a>
-    </nav>
+<!-- Products -->
+<div id="products" class="grid"></div>
 
-    <main class="container">
-        <div class="products-grid">
-            
-            <div class="product-card">
-                <div class="product-img" style="background-color: #f1c40f;"></div>
-                <div class="product-info">
-                    <h3>Tabiiy Apelsin Sharbati, 1L</h3>
-                    <p class="price">15 000 so'm</p>
-                    <button class="add-to-cart">Savatga qo'shish</button>
-                </div>
-            </div>
+<!-- CART -->
+<div class="cart">
+  <h3>🛒 Korzina</h3>
+  <div id="cartItems"></div>
+  <h4>Jami: <span id="total">0</span> som</h4>
 
-            <div class="product-card">
-                <div class="product-img" style="background-color: #e74c3c;"></div>
-                <div class="product-info">
-                    <h3>Yangi Qulupnay, 1kg</h3>
-                    <p class="price">45 000 so'm</p>
-                    <button class="add-to-cart">Savatga qo'shish</button>
-                </div>
-            </div>
+  <button onclick="checkout()">Oformit qilish</button>
+</div>
 
-            <div class="product-card">
-                <div class="product-img" style="background-color: #8e44ad;"></div>
-                <div class="product-info">
-                    <h3>Shokoladli Pishiriq</h3>
-                    <p class="price">20 000 so'm</p>
-                    <button class="add-to-cart">Savatga qo'shish</button>
-                </div>
-            </div>
+<!-- CHECKOUT -->
+<div id="checkout" class="checkout hidden">
+  <h2>📦 Oformit zakaz</h2>
 
-            <div class="product-card">
-                <div class="product-img" style="background-color: #27ae60;"></div>
-                <div class="product-info">
-                    <h3>Bodring (Sementniy navi), 1kg</h3>
-                    <p class="price">8 000 so'm</p>
-                    <button class="add-to-cart">Savatga qo'shish</button>
-                </div>
-            </div>
+  <input placeholder="+996 telefon" />
+  <input placeholder="Adres" />
+  <textarea placeholder="Izoh"></textarea>
 
-        </div>
-    </main>
+  <button onclick="alert('Zakaz qabul qilindi!')">Tasdiqlash</button>
+</div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 "Semeyniy" onlayn do'koni. Barcha huquqlar himoyalangan.</p>
-        </div>
-    </footer>
-
+<script src="script.js"></script>
 </body>
 </html>
