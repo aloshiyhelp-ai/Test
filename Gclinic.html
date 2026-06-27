@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Med Clinic — Премиальная медицина и забота о здоровье</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #0A2540;
+            --secondary: #00D4FF;
+            --accent: #0075FF;
+            --text-main: #2A3B4C;
+            --text-muted: #64748B;
+            --bg-light: #F8FAFC;
+            --white: #FFFFFF;
+            
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(10, 37, 64, 0.08);
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px -5px rgba(0, 117, 255, 0.15);
+            
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --border-radius: 24px;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--primary);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* Layout & Containers */
+        .container {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: var(--white);
+            box-shadow: 0 10px 20px rgba(0, 117, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(0, 117, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: var(--shadow-md);
+            color: var(--accent);
+        }
+
+        /* Header (Glassmorphism) */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 0;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--primary);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            background: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(10, 37, 64, 0.9) 0%, rgba(10, 37, 64, 0.4) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 650px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px;
+            border-radius: var(--border-radius);
+            color: var(--white);
+        }
+
+        .hero h1 {
+            color: var(--white);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Advantages */
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .advantage-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.03);
+            text-align: left;
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--secondary);
+        }
+
+        .adv-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: rgba(0, 117, 255, 0.1);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+
+        .advantage-card:hover .adv-icon {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .advantage-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+
+        .advantage-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Services */
+        .services-bg {
+            background-color: var(--white);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            group: hover;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .service-img {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .service-card:hover .service-img {
+            transform: scale(1.05);
+        }
+
+        .service-content {
+            padding: 30px;
+            background: var(--white);
+            position: relative;
+            z-index: 2;
+        }
+
+        .service-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .service-content p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .service-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .service-link i {
+            transition: var(--transition);
+        }
+
+        .service-link:hover i {
+            transform: translateX(5px);
+        }
+
+        /* About Us */
+        .about-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .about-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .about-image img {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .experience-badge {
+            position: absolute;
+            bottom: -30px;
+            right: -30px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-hover);
+            text-align: center;
+        }
+
+        .experience-badge h4 {
+            font-size: 3rem;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+        }
+
+        .about-content p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .check-list {
+            margin: 30px 0;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .check-list i {
+            color: #10B981;
+            font-size: 1.2rem;
+        }
+
+        /* Gallery */
+        .gallery-bg {
+            background-color: var(--white);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 250px;
+            gap: 20px;
+        }
+
+        .gallery-item {
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+        .gallery-item:nth-child(4) { grid-column: span 2; }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 37, 64, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .gallery-overlay i {
+            color: var(--white);
+            font-size: 2rem;
+            transform: scale(0);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img { transform: scale(1.05); }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-item:hover .gallery-overlay i { transform: scale(1); }
+
+        /* Team */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .team-img-wrap {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+        }
+
+        .team-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-social {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        .team-card:hover .team-social {
+            bottom: 0;
+        }
+
+        .team-social a {
+            color: var(--primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .team-social a:hover {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .team-info {
+            padding: 24px;
+        }
+
+        .team-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+        }
+
+        .team-info p {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Testimonials */
+        .testimonials-bg {
+            background-color: var(--white);
+        }
+
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .testi-card {
+            background: var(--bg-light);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            position: relative;
+        }
+
+        .testi-icon {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: rgba(0, 117, 255, 0.1);
+            font-size: 3rem;
+        }
+
+        .testi-text {
+            font-size: 1.05rem;
+            font-style: italic;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .testi-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testi-author img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+
+        .author-info p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* FAQ */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 24px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--accent);
+        }
+
+        .faq-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+            color: var(--accent);
+        }
+
+        .faq-answer {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            color: var(--text-muted);
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 30px 24px 30px;
+            max-height: 300px; /* arbitrary large value */
+        }
+
+        /* Booking Form Section */
+        .booking-section {
+            background: url('https://images.unsplash.com/photo-1638202993928-7267aad84c31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            position: relative;
+        }
+
+        .booking-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 37, 64, 0.8);
+        }
+
+        .booking-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+        }
+
+        .booking-form-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 600px;
+            color: var(--white);
+        }
+
+        .booking-form-card h2 {
+            color: var(--white);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .booking-form-card p {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: var(--white);
+            padding: 80px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h3 {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+        }
+
+        .footer-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo i { color: var(--secondary); }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+            max-width: 300px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+
+        .contact-info li {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .contact-info i {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin-top: 4px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .about-wrapper { flex-direction: column; gap: 40px; }
+            .experience-badge { bottom: -20px; right: 20px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-item:nth-child(4) { grid-column: auto; }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 70px 0; }
+            
+            .nav-links, .header-btn {
+                display: none; /* Mobile menu hidden by default */
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* Simple Mobile Nav Implementation for single file */
+            .nav-active .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                padding: 20px;
+                box-shadow: var(--shadow-md);
+            }
+            .nav-active .header-btn {
+                display: flex;
+                margin-top: 20px;
+            }
+
+            .hero h1 { font-size: 2.2rem; }
+            .hero-btns { flex-direction: column; }
+            
+            .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+            .gallery-item:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+            
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-heart-pulse"></i>
+                Med Clinic
+            </a>
+            <nav class="nav-links">
+                <a href="#about">О клинике</a>
+                <a href="#advantages">Преимущества</a>
+                <a href="#services">Услуги</a>
+                <a href="#team">Специалисты</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+            <a href="#booking" class="btn btn-primary header-btn">Записаться на прием</a>
+            <div class="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content reveal active">
+                <div class="glass-card">
+                    <h1>Медицина будущего, забота о вас уже сегодня</h1>
+                    <p>Инновационный подход к диагностике и лечению. Доверьте свое здоровье профессионалам высшей категории в комфортных условиях премиум-класса.</p>
+                    <div class="hero-btns">
+                        <a href="#booking" class="btn btn-primary">Онлайн запись</a>
+                        <a href="#services" class="btn btn-secondary">Наши услуги</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="advantages" class="reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2>Почему выбирают нас</h2>
+                <p>Мы создали пространство, где передовые технологии сочетаются с искренней заботой о каждом пациенте.</p>
+            </div>
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <div class="adv-icon"><i class="fa-solid fa-microscope"></i></div>
+                    <h3>Передовое оборудование</h3>
+                    <p>Диагностика высочайшей точности на аппаратах экспертного класса 2023-2024 года выпуска.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="adv-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                    <h3>Врачи эксперты</h3>
+                    <p>Команда специалистов высшей категории, кандидатов и докторов медицинских наук.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="adv-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <h3>Индивидуальный подход</h3>
+                    <p>Персональный план лечения и личный куратор для каждого пациента на всех этапах.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="adv-icon"><i class="fa-regular fa-clock"></i></div>
+                    <h3>Без очередей</h3>
+                    <p>Строгое соблюдение тайминга приема. Вы не потратите ни одной лишней минуты в ожидании.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="adv-icon"><i class="fa-solid fa-bed-pulse"></i></div>
+                    <h3>Премиум стационар</h3>
+                    <p>Одноместные палаты уровня пятизвездочного отеля с круглосуточным наблюдением.</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="adv-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>Международные стандарты</h3>
+                    <p>Лечение по протоколам доказательной медицины, одобренным ВОЗ и FDA.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services-bg reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2>Направления клиники</h2>
+                <p>Полный спектр медицинских услуг в одном месте для вашего удобства и здоровья.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Диагностика" class="service-img">
+                    <div class="service-content">
+                        <h3>Комплексная диагностика</h3>
+                        <p>МРТ, КТ, УЗИ экспертного класса, эндоскопия во сне и собственная лаборатория.</p>
+                        <a href="#booking" class="service-link">Записаться <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Хирургия" class="service-img">
+                    <div class="service-content">
+                        <h3>Малоинвазивная хирургия</h3>
+                        <p>Операции одного дня, лапароскопия и быстрое восстановление в комфортном стационаре.</p>
+                        <a href="#booking" class="service-link">Записаться <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Стоматология" class="service-img">
+                    <div class="service-content">
+                        <h3>Цифровая стоматология</h3>
+                        <p>Имплантация, виниры, лечение под микроскопом и безболезненная терапия.</p>
+                        <a href="#booking" class="service-link">Записаться <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="reveal">
+        <div class="container">
+            <div class="about-wrapper">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1538108149393-cebb47acddb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="О клинике Med Clinic">
+                    <div class="experience-badge">
+                        <h4>15+</h4>
+                        <p>Лет успешной<br>практики</p>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h2>Новый стандарт медицинского обслуживания</h2>
+                    <p>Med Clinic была основана с одной целью — предоставить пациентам уровень медицины, соответствующий лучшим мировым клиникам, не выезжая за границу.</p>
+                    <p>Мы объединили передовые технологии, признанных экспертов и премиальный сервис, чтобы процесс лечения был максимально эффективным и комфортным.</p>
+                    
+                    <ul class="check-list">
+                        <li><i class="fa-solid fa-circle-check"></i> Более 50 направлений медицины</li>
+                        <li><i class="fa-solid fa-circle-check"></i> 12 000+ довольных пациентов ежегодно</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Консилиумный подход к сложным диагнозам</li>
+                    </ul>
+                    
+                    <a href="#team" class="btn btn-secondary">Познакомиться с врачами</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery-bg reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2>Интерьеры и оборудование</h2>
+                <p>Погрузитесь в атмосферу спокойствия и технологичности нашей клиники.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1519494080410-f9aa76cb4283?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Холл клиники">
+                    <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Кабинет МРТ">
+                    <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1579684453423-f84349ef60b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Операционная">
+                    <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Кабинет врача">
+                    <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Стационар">
+                    <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2>Наши специалисты</h2>
+                <p>Гордость Med Clinic — врачи с многолетним опытом, регулярно повышающие квалификацию за рубежом.</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Врач">
+                        <div class="team-social">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Д-р Александр Громов</h3>
+                        <p>Главный врач, Хирург</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1594824436998-d40d59fc6c50?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Врач">
+                        <div class="team-social">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Д-р Елена Смирнова</h3>
+                        <p>Врач-кардиолог, д.м.н.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Врач">
+                        <div class="team-social">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Д-р Михаил Лебедев</h3>
+                        <p>Ведущий невролог</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Врач">
+                        <div class="team-social">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Д-р Анна Коваль</h3>
+                        <p>Эндокринолог, диетолог</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials-bg reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2>Отзывы пациентов</h2>
+                <p>Для нас нет ничего важнее доверия и здоровья людей, которые выбрали Med Clinic.</p>
+            </div>
+            <div class="testi-grid">
+                <div class="testi-card">
+                    <i class="fa-solid fa-quote-right testi-icon"></i>
+                    <p class="testi-text">"Никогда не думал, что визит в клинику может быть таким комфортным. От встречи на ресепшн до самой операции все прошло идеально. Врачи настоящие профессионалы."</p>
+                    <div class="testi-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Клиент">
+                        <div class="author-info">
+                            <h4>Игорь Воронов</h4>
+                            <p>Пациент отделения хирургии</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <i class="fa-solid fa-quote-right testi-icon"></i>
+                    <p class="testi-text">"Проходила комплексный чекап организма. Оборудование фантастическое, результаты расшифровали очень подробно, назначили профилактику. Теперь только к вам!"</p>
+                    <div class="testi-author">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Клиент">
+                        <div class="author-info">
+                            <h4>Мария Светлова</h4>
+                            <p>Комплексная диагностика</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="reveal">
+        <div class="container">
+            <div class="section-header">
+                <h2>Частые вопросы</h2>
+                <p>Мы собрали ответы на самые популярные вопросы наших пациентов.</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Как подготовиться к первому приему?
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Возьмите с собой паспорт для оформления карты. Если у вас есть результаты предыдущих анализов, УЗИ или МРТ (диски/пленки) по вашему профилю заболевания, обязательно принесите их — это поможет врачу собрать полный анамнез.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Работаете ли вы по полисам ДМС?
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Да, мы сотрудничаем с 15 крупнейшими страховыми компаниями. Пожалуйста, уточните у вашего оператора ДМС, входит ли наша клиника в вашу программу страхования, или позвоните нам для консультации.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Есть ли у клиники собственная парковка?
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Да, для наших пациентов предусмотрен бесплатный охраняемый подземный паркинг. При записи на прием сообщите администратору номер вашего автомобиля для оформления пропуска.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Как получить результаты анализов?
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Результаты автоматически загружаются в ваш личный кабинет в мобильном приложении клиники. Также мы можем отправить их на вашу защищенную электронную почту по готовности.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="booking" class="booking-section reveal">
+        <div class="container">
+            <div class="booking-wrapper">
+                <div class="booking-form-card">
+                    <h2>Запись на консультацию</h2>
+                    <p>Оставьте заявку, и наш медицинский координатор свяжется с вами в течение 10 минут для подбора удобного времени.</p>
+                    <form id="appointmentForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Ваше имя" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" placeholder="Номер телефона" required>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" style="appearance: none;" required>
+                                <option value="" disabled selected>Выберите направление</option>
+                                <option value="diagnostics">Диагностика (МРТ, КТ, УЗИ)</option>
+                                <option value="therapy">Терапия</option>
+                                <option value="surgery">Хирургия</option>
+                                <option value="cardio">Кардиология</option>
+                                <option value="other">Другое / Не уверен(а)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Опишите вашу проблему (необязательно)"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary submit-btn">Оставить заявку</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="footer-logo">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        Med Clinic
+                    </a>
+                    <p class="footer-text">Премиальная многопрофильная клиника, предоставляющая медицинские услуги мирового стандарта.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                        <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Пациентам</h3>
+                    <ul class="footer-links">
+                        <li><a href="#services">Услуги и цены</a></li>
+                        <li><a href="#team">Врачи</a></li>
+                        <li><a href="#faq">Частые вопросы</a></li>
+                        <li><a href="#">Программы ДМС</a></li>
+                        <li><a href="#">Акции</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>О клинике</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#gallery">Галерея</a></li>
+                        <li><a href="#">Лицензии</a></li>
+                        <li><a href="#">Отзывы</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Контакты</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>г. Москва, Пресненская набережная, д. 12<br>(Москва-Сити, Башня Федерация)</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+7 (495) 000-00-00<br>Круглосуточно</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>info@medclinic.ru</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Med Clinic. Все права защищены. Имеются противопоказания, необходимо проконсультироваться со специалистом.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Sticky Glass Header on Scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // 2. Smooth Scroll for Anchor Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    // Close mobile menu if open
+                    const navContainer = document.querySelector('.nav-container');
+                    if (navContainer.classList.contains('nav-active')) {
+                        navContainer.classList.remove('nav-active');
+                    }
+
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerOffset = 80;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+
+            // 3. Scroll Reveal Animations (Intersection Observer)
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // 4. FAQ Accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all other items
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            // 5. Mobile Menu Toggle
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const navContainer = document.querySelector('.nav-container');
+            
+            mobileBtn.addEventListener('click', () => {
+                navContainer.classList.toggle('nav-active');
+            });
+
+            // 6. Form Submission (Prevent Default for demo)
+            const form = document.getElementById('appointmentForm');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const btn = form.querySelector('.submit-btn');
+                    const originalText = btn.innerHTML;
+                    
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Отправка...';
+                    btn.style.opacity = '0.8';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Заявка отправлена';
+                        btn.style.background = '#10B981';
+                        form.reset();
+                        
+                        setTimeout(() => {
+                            btn.innerHTML = originalText;
+                            btn.style.background = '';
+                            btn.style.opacity = '1';
+                        }, 3000);
+                    }, 1500);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
