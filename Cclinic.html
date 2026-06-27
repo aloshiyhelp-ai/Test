@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedVita — Клиника современной медицины</title>
+  <meta name="description" content="MedVita — премиальная медицинская клиника с передовыми технологиями и индивидуальным подходом к каждому пациенту." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===================== DESIGN TOKENS ===================== */
+    :root {
+      --c-navy:     #0A1628;
+      --c-deep:     #0D1F3C;
+      --c-teal:     #00B8A9;
+      --c-teal-lt:  #00D4C3;
+      --c-mint:     #E8FAF8;
+      --c-white:    #FFFFFF;
+      --c-offwhite: #F5F7FA;
+      --c-text:     #1C2B3A;
+      --c-muted:    #6B7A8D;
+      --c-border:   rgba(0,184,169,.18);
+
+      --glass-bg:   rgba(255,255,255,.08);
+      --glass-bd:   rgba(255,255,255,.14);
+
+      --shadow-sm:  0 2px 12px rgba(0,0,0,.06);
+      --shadow-md:  0 8px 32px rgba(0,0,0,.10);
+      --shadow-lg:  0 24px 64px rgba(0,0,0,.14);
+      --shadow-teal:0 8px 32px rgba(0,184,169,.28);
+
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+
+      --r-sm: 12px;
+      --r-md: 20px;
+      --r-lg: 32px;
+      --r-xl: 48px;
+
+      --ease: cubic-bezier(.22,.68,0,1.2);
+      --ease-out: cubic-bezier(.16,1,.3,1);
+      --trans: .4s var(--ease-out);
+    }
+
+    /* ===================== RESET ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--c-text);
+      background: var(--c-white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    ul, ol { list-style: none; }
+    button { border: none; cursor: pointer; background: none; font-family: inherit; }
+
+    /* ===================== UTILITIES ===================== */
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--c-teal);
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px; height: 2px;
+      background: var(--c-teal);
+      border-radius: 2px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.18;
+      color: var(--c-navy);
+    }
+    .section-title span { color: var(--c-teal); }
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--c-muted);
+      max-width: 560px;
+      margin-top: 14px;
+      line-height: 1.7;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 600;
+      transition: var(--trans);
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--c-teal);
+      color: var(--c-white);
+      box-shadow: var(--shadow-teal);
+    }
+    .btn-primary:hover {
+      background: var(--c-teal-lt);
+      box-shadow: 0 12px 40px rgba(0,184,169,.42);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      border: 2px solid rgba(255,255,255,.4);
+      color: var(--c-white);
+      backdrop-filter: blur(8px);
+    }
+    .btn-outline:hover {
+      border-color: var(--c-teal);
+      background: rgba(0,184,169,.12);
+      transform: translateY(-2px);
+    }
+    .btn-dark {
+      background: var(--c-navy);
+      color: var(--c-white);
+    }
+    .btn-dark:hover {
+      background: var(--c-deep);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ===================== REVEAL ANIMATIONS ===================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .reveal-left  { transform: translateX(-40px); }
+    .reveal-right { transform: translateX(40px); }
+    .reveal-left.visible, .reveal-right.visible { transform: none; opacity: 1; }
+    .delay-1 { transition-delay: .1s; }
+    .delay-2 { transition-delay: .2s; }
+    .delay-3 { transition-delay: .3s; }
+    .delay-4 { transition-delay: .4s; }
+    .delay-5 { transition-delay: .5s; }
+    .delay-6 { transition-delay: .6s; }
+
+    /* ===================== NAVBAR ===================== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 20px 0;
+      transition: background .4s ease, box-shadow .4s ease, padding .4s ease;
+    }
+    .navbar.scrolled {
+      background: rgba(10,22,40,.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 2px 24px rgba(0,0,0,.22);
+      padding: 12px 0;
+    }
+    .navbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--c-white);
+    }
+    .navbar__logo-icon {
+      width: 38px; height: 38px;
+      background: var(--c-teal);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      color: var(--c-white);
+    }
+    .navbar__nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .navbar__nav a {
+      font-size: .9rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.78);
+      transition: color .25s;
+      position: relative;
+    }
+    .navbar__nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 2px;
+      background: var(--c-teal);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transition: transform .3s var(--ease);
+    }
+    .navbar__nav a:hover { color: var(--c-white); }
+    .navbar__nav a:hover::after { transform: scaleX(1); }
+    .navbar__cta { font-size: .88rem; padding: 12px 24px; }
+    .navbar__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .navbar__hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--c-white);
+      border-radius: 2px;
+      transition: var(--trans);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(10,22,40,.97);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--c-white);
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: color .3s, opacity .5s var(--ease-out), transform .5s var(--ease-out);
+    }
+    .mobile-menu.open a { opacity: 1; transform: none; }
+    .mobile-menu a:nth-child(1) { transition-delay: .1s; }
+    .mobile-menu a:nth-child(2) { transition-delay: .15s; }
+    .mobile-menu a:nth-child(3) { transition-delay: .2s; }
+    .mobile-menu a:nth-child(4) { transition-delay: .25s; }
+    .mobile-menu a:nth-child(5) { transition-delay: .3s; }
+    .mobile-menu a:nth-child(6) { transition-delay: .35s; }
+    .mobile-menu a:hover { color: var(--c-teal); }
+    .mobile-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      font-size: 1.5rem;
+      color: var(--c-white);
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* ===================== HERO ===================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--c-navy);
+    }
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0,184,169,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 20% 80%, rgba(0,100,200,.12) 0%, transparent 60%),
+        linear-gradient(135deg, #0A1628 0%, #0D1F3C 60%, #072940 100%);
+    }
+    .hero__grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,184,169,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,184,169,.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+    .hero__particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .hero__particle {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--c-teal);
+      opacity: 0;
+      animation: floatParticle linear infinite;
+    }
+    @keyframes floatParticle {
+      0%   { opacity: 0; transform: translateY(0) scale(0); }
+      10%  { opacity: .6; }
+      90%  { opacity: .3; }
+      100% { opacity: 0; transform: translateY(-120px) scale(.5); }
+    }
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      padding: 120px 0 80px;
+    }
+    .hero__left { }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-bd);
+      backdrop-filter: blur(16px);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--c-teal);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero__badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--c-teal);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .5; transform: scale(.7); }
+    }
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.12;
+      color: var(--c-white);
+      margin-bottom: 22px;
+    }
+    .hero__title em {
+      font-style: normal;
+      color: var(--c-teal);
+      position: relative;
+    }
+    .hero__title em::after {
+      content: '';
+      position: absolute;
+      bottom: 2px; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--c-teal), transparent);
+      border-radius: 3px;
+    }
+    .hero__subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,.62);
+      line-height: 1.75;
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 52px;
+    }
+    .hero__stats {
+      display: flex;
+      gap: 36px;
+    }
+    .hero__stat { }
+    .hero__stat-num {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--c-white);
+      line-height: 1;
+    }
+    .hero__stat-num span { color: var(--c-teal); }
+    .hero__stat-label {
+      font-size: .78rem;
+      color: rgba(255,255,255,.5);
+      margin-top: 4px;
+      letter-spacing: .04em;
+    }
+    .hero__right {
+      display: flex;
+      justify-content: center;
+    }
+    .hero__card-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+    }
+    .hero__img-card {
+      position: relative;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      background: linear-gradient(135deg, #1a3a5c 0%, #0d2a45 100%);
+      box-shadow: 0 40px 80px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .hero__img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background: linear-gradient(145deg, #0e2840, #133554, #0A1628);
+    }
+    .hero__img-icon {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: rgba(0,184,169,.15);
+      border: 2px solid rgba(0,184,169,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      color: var(--c-teal);
+    }
+    .hero__img-text {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: rgba(255,255,255,.5);
+      text-align: center;
+    }
+    /* Floating cards on hero image */
+    .hero__float {
+      position: absolute;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(20px);
+      border-radius: var(--r-md);
+      padding: 14px 20px;
+      box-shadow: var(--shadow-lg);
+      animation: floatY 4s ease-in-out infinite;
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    .hero__float-1 {
+      left: -30px; top: 18%;
+      animation-delay: 0s;
+    }
+    .hero__float-2 {
+      right: -24px; bottom: 22%;
+      animation-delay: 1.5s;
+    }
+    .hero__float-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero__float-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+    .icon-teal   { background: rgba(0,184,169,.12); color: var(--c-teal); }
+    .icon-gold   { background: rgba(255,180,0,.12); color: #F5A623; }
+    .icon-blue   { background: rgba(59,130,246,.12); color: #3B82F6; }
+    .hero__float-label {
+      font-size: .7rem;
+      color: var(--c-muted);
+      font-weight: 500;
+    }
+    .hero__float-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--c-navy);
+      line-height: 1;
+    }
+    /* Orb decorations */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+      opacity: .35;
+    }
+    .orb-1 {
+      width: 360px; height: 360px;
+      background: var(--c-teal);
+      top: -80px; right: -80px;
+    }
+    .orb-2 {
+      width: 260px; height: 260px;
+      background: #2563EB;
+      bottom: 10%; left: -60px;
+    }
+
+    /* ===================== ADVANTAGES ===================== */
+    .advantages {
+      padding: 100px 0;
+      background: var(--c-offwhite);
+    }
+    .advantages__head {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .advantages__head .section-label { justify-content: center; }
+    .advantages__head .section-label::before { display: none; }
+    .advantages__head .section-sub { margin: 14px auto 0; }
+    .advantages__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .adv-card {
+      background: var(--c-white);
+      border-radius: var(--r-md);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid transparent;
+      transition: var(--trans);
+      position: relative;
+      overflow: hidden;
+    }
+    .adv-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--c-teal), var(--c-teal-lt));
+      transform: scaleX(0);
+      transition: transform .4s var(--ease-out);
+    }
+    .adv-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--c-border);
+    }
+    .adv-card:hover::before { transform: scaleX(1); }
+    .adv-card__icon {
+      width: 58px; height: 58px;
+      border-radius: 16px;
+      background: var(--c-mint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: var(--c-teal);
+      margin-bottom: 22px;
+      transition: var(--trans);
+    }
+    .adv-card:hover .adv-card__icon {
+      background: var(--c-teal);
+      color: var(--c-white);
+      transform: scale(1.08);
+    }
+    .adv-card__title {
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: var(--c-navy);
+      margin-bottom: 10px;
+    }
+    .adv-card__text {
+      font-size: .9rem;
+      color: var(--c-muted);
+      line-height: 1.65;
+    }
+
+    /* ===================== SERVICES ===================== */
+    .services {
+      padding: 100px 0;
+      background: var(--c-white);
+    }
+    .services__layout {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .services__left { }
+    .services__right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .svc-card {
+      background: var(--c-offwhite);
+      border-radius: var(--r-md);
+      padding: 28px 26px;
+      border: 1px solid transparent;
+      transition: var(--trans);
+      cursor: default;
+    }
+    .svc-card:hover {
+      background: var(--c-navy);
+      border-color: transparent;
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .svc-card__icon {
+      font-size: 1.6rem;
+      color: var(--c-teal);
+      margin-bottom: 16px;
+      transition: color .3s;
+    }
+    .svc-card__name {
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--c-navy);
+      margin-bottom: 8px;
+      transition: color .3s;
+    }
+    .svc-card__desc {
+      font-size: .82rem;
+      color: var(--c-muted);
+      line-height: 1.6;
+      transition: color .3s;
+    }
+    .svc-card:hover .svc-card__icon { color: var(--c-teal-lt); }
+    .svc-card:hover .svc-card__name { color: var(--c-white); }
+    .svc-card:hover .svc-card__desc { color: rgba(255,255,255,.55); }
+    .services__cta { margin-top: 32px; }
+
+    /* ===================== GALLERY ===================== */
+    .gallery {
+      padding: 100px 0;
+      background: var(--c-navy);
+    }
+    .gallery__head {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .gallery__head .section-label { justify-content: center; color: var(--c-teal); }
+    .gallery__head .section-label::before { background: var(--c-teal); display: none; }
+    .gallery__head .section-title { color: var(--c-white); }
+    .gallery__head .section-sub { color: rgba(255,255,255,.5); margin: 14px auto 0; }
+    .gallery__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 200px 200px;
+      gap: 16px;
+    }
+    .gallery__item {
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      position: relative;
+      background: var(--c-deep);
+      cursor: pointer;
+    }
+    .gallery__item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .gallery__item:nth-child(4) { grid-column: span 2; }
+    .gallery__item-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0d2a45, #133554);
+      transition: transform .5s var(--ease-out);
+    }
+    .gallery__item:hover .gallery__item-inner { transform: scale(1.05); }
+    .gallery__item-icon {
+      font-size: 2.5rem;
+      color: rgba(0,184,169,.4);
+    }
+    .gallery__item-label {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 50%);
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .gallery__item:hover .gallery__item-label { opacity: 1; }
+    .gallery__item-label span {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--c-white);
+    }
+    .gallery__item:nth-child(1) .gallery__item-icon { font-size: 4rem; }
+
+    /* ===================== ABOUT ===================== */
+    .about {
+      padding: 100px 0;
+      background: var(--c-white);
+    }
+    .about__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about__visual {
+      position: relative;
+    }
+    .about__img-main {
+      border-radius: var(--r-lg);
+      aspect-ratio: 4/5;
+      background: linear-gradient(145deg, #e8faf8, #d4f4f1, #c0eee9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      color: var(--c-teal);
+      position: relative;
+      overflow: hidden;
+    }
+    .about__img-main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(0,184,169,.12));
+    }
+    .about__exp-badge {
+      position: absolute;
+      bottom: -20px; right: -20px;
+      background: var(--c-navy);
+      color: var(--c-white);
+      border-radius: var(--r-md);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+    .about__exp-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--c-teal);
+      line-height: 1;
+    }
+    .about__exp-text {
+      font-size: .78rem;
+      color: rgba(255,255,255,.6);
+      margin-top: 4px;
+    }
+    .about__content { }
+    .about__list {
+      margin: 28px 0 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .about__list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: .95rem;
+      color: var(--c-muted);
+    }
+    .about__list-icon {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--c-mint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .65rem;
+      color: var(--c-teal);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .about__numbers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .about__num-item {
+      background: var(--c-offwhite);
+      border-radius: var(--r-sm);
+      padding: 20px;
+    }
+    .about__num-val {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--c-navy);
+      line-height: 1;
+    }
+    .about__num-val span { color: var(--c-teal); }
+    .about__num-label {
+      font-size: .78rem;
+      color: var(--c-muted);
+      margin-top: 4px;
+    }
+
+    /* ===================== TEAM ===================== */
+    .team {
+      padding: 100px 0;
+      background: var(--c-offwhite);
+    }
+    .team__head {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .team__head .section-label { justify-content: center; }
+    .team__head .section-label::before { display: none; }
+    .team__head .section-sub { margin: 14px auto 0; }
+    .team__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .team-card {
+      background: var(--c-white);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--trans);
+    }
+    .team-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-md);
+    }
+    .team-card__photo {
+      aspect-ratio: 1;
+      background: linear-gradient(145deg, #e8faf8, #c4ede9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: var(--c-teal);
+      position: relative;
+      overflow: hidden;
+    }
+    .team-card__photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--c-navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .team-card:hover .team-card__photo-overlay { opacity: 1; }
+    .team-card__social-link {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-white);
+      font-size: .9rem;
+      transition: background .3s;
+    }
+    .team-card__social-link:hover {
+      background: var(--c-teal);
+      border-color: var(--c-teal);
+    }
+    .team-card__body {
+      padding: 22px 22px 26px;
+    }
+    .team-card__name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--c-navy);
+      margin-bottom: 4px;
+    }
+    .team-card__role {
+      font-size: .8rem;
+      color: var(--c-teal);
+      font-weight: 600;
+      letter-spacing: .04em;
+      margin-bottom: 10px;
+    }
+    .team-card__exp {
+      font-size: .8rem;
+      color: var(--c-muted);
+    }
+    .team-card__exp i { margin-right: 4px; }
+
+    /* ===================== REVIEWS ===================== */
+    .reviews {
+      padding: 100px 0;
+      background: var(--c-white);
+      overflow: hidden;
+    }
+    .reviews__head {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .reviews__head .section-label { justify-content: center; }
+    .reviews__head .section-label::before { display: none; }
+    .reviews__head .section-sub { margin: 14px auto 0; }
+    .reviews__track-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+    .reviews__track-wrap::before,
+    .reviews__track-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 120px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .reviews__track-wrap::before {
+      left: 0;
+      background: linear-gradient(to right, var(--c-white), transparent);
+    }
+    .reviews__track-wrap::after {
+      right: 0;
+      background: linear-gradient(to left, var(--c-white), transparent);
+    }
+    .reviews__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .review-card {
+      background: var(--c-offwhite);
+      border-radius: var(--r-md);
+      padding: 32px 28px;
+      border: 1px solid transparent;
+      transition: var(--trans);
+    }
+    .review-card:hover {
+      border-color: var(--c-border);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+    }
+    .review-card__stars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+    .review-card__stars i { color: #F5A623; font-size: .85rem; }
+    .review-card__text {
+      font-size: .92rem;
+      color: var(--c-muted);
+      line-height: 1.72;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+    .review-card__author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .review-card__avatar {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-teal), #2563EB);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--c-white);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .review-card__name {
+      font-weight: 700;
+      font-size: .9rem;
+      color: var(--c-navy);
+    }
+    .review-card__meta {
+      font-size: .75rem;
+      color: var(--c-muted);
+      margin-top: 2px;
+    }
+    .review-card__quote-icon {
+      float: right;
+      font-size: 3rem;
+      color: var(--c-mint);
+      line-height: .7;
+      font-family: Georgia, serif;
+    }
+
+    /* ===================== FAQ ===================== */
+    .faq {
+      padding: 100px 0;
+      background: var(--c-offwhite);
+    }
+    .faq__layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .faq__left { position: sticky; top: 100px; }
+    .faq__list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-item {
+      background: var(--c-white);
+      border-radius: var(--r-sm);
+      border: 1px solid #eef0f3;
+      overflow: hidden;
+      transition: box-shadow .3s;
+    }
+    .faq-item.open {
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-item__q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 26px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--c-navy);
+      transition: color .3s;
+    }
+    .faq-item__q:hover { color: var(--c-teal); }
+    .faq-item__icon {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--c-mint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      color: var(--c-teal);
+      flex-shrink: 0;
+      transition: var(--trans);
+    }
+    .faq-item.open .faq-item__icon {
+      background: var(--c-teal);
+      color: var(--c-white);
+      transform: rotate(45deg);
+    }
+    .faq-item__a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .5s var(--ease-out), padding .3s;
+    }
+    .faq-item.open .faq-item__a { max-height: 300px; }
+    .faq-item__a-inner {
+      padding: 0 26px 22px;
+      font-size: .9rem;
+      color: var(--c-muted);
+      line-height: 1.7;
+    }
+
+    /* ===================== CONTACT FORM ===================== */
+    .contact {
+      padding: 100px 0;
+      background: var(--c-navy);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact__bg-orb {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,184,169,.14), transparent);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+    .contact__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .contact__left .section-title { color: var(--c-white); }
+    .contact__left .section-sub { color: rgba(255,255,255,.55); }
+    .contact__perks {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .contact__perk {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: .92rem;
+      color: rgba(255,255,255,.7);
+    }
+    .contact__perk-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(0,184,169,.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      color: var(--c-teal);
+      flex-shrink: 0;
+    }
+    .contact__form-wrap {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(20px);
+      border-radius: var(--r-lg);
+      padding: 44px 40px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 8px;
+      letter-spacing: .04em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--r-sm);
+      padding: 14px 18px;
+      font-size: .92rem;
+      color: var(--c-white);
+      font-family: var(--font-body);
+      transition: border-color .3s, background .3s;
+      outline: none;
+      appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(255,255,255,.3);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--c-teal);
+      background: rgba(0,184,169,.08);
+    }
+    .form-group select option { background: var(--c-navy); color: var(--c-white); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-group.full { grid-column: span 2; }
+    .form-submit {
+      width: 100%;
+      padding: 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: var(--c-teal);
+      color: var(--c-white);
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: var(--trans);
+      box-shadow: var(--shadow-teal);
+      font-family: var(--font-body);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .form-submit:hover {
+      background: var(--c-teal-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,184,169,.42);
+    }
+    .form-note {
+      text-align: center;
+      font-size: .76rem;
+      color: rgba(255,255,255,.3);
+      margin-top: 14px;
+    }
+    .form-note i { color: var(--c-teal); margin-right: 4px; }
+
+    /* ===================== CONTACTS SECTION ===================== */
+    .contacts {
+      padding: 80px 0;
+      background: var(--c-offwhite);
+    }
+    .contacts__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .contacts__card {
+      background: var(--c-white);
+      border-radius: var(--r-md);
+      padding: 32px 26px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: var(--trans);
+    }
+    .contacts__card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .contacts__card-icon {
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      background: var(--c-mint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--c-teal);
+      margin: 0 auto 18px;
+    }
+    .contacts__card-label {
+      font-size: .76rem;
+      color: var(--c-muted);
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .contacts__card-val {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--c-navy);
+    }
+    .contacts__card-val a {
+      color: var(--c-teal);
+      transition: color .3s;
+    }
+    .contacts__card-val a:hover { color: var(--c-teal-lt); }
+    .contacts__card-sub {
+      font-size: .78rem;
+      color: var(--c-muted);
+      margin-top: 4px;
+    }
+
+    /* ===================== FOOTER ===================== */
+    .footer {
+      background: var(--c-navy);
+      padding: 60px 0 30px;
+    }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .footer__brand { }
+    .footer__brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--c-white);
+      margin-bottom: 16px;
+    }
+    .footer__brand-desc {
+      font-size: .88rem;
+      color: rgba(255,255,255,.45);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer__socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .footer__social {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      color: rgba(255,255,255,.5);
+      transition: var(--trans);
+    }
+    .footer__social:hover {
+      background: var(--c-teal);
+      border-color: var(--c-teal);
+      color: var(--c-white);
+      transform: translateY(-2px);
+    }
+    .footer__col-title {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      margin-bottom: 20px;
+    }
+    .footer__links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer__links a {
+      font-size: .88rem;
+      color: rgba(255,255,255,.5);
+      transition: color .3s;
+    }
+    .footer__links a:hover { color: var(--c-teal); }
+    .footer__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 28px;
+      font-size: .8rem;
+      color: rgba(255,255,255,.25);
+    }
+
+    /* ===================== SCROLL TO TOP ===================== */
+    .scroll-top {
+      position: fixed;
+      bottom: 32px; right: 32px;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: var(--c-teal);
+      color: var(--c-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-teal);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: var(--trans);
+      z-index: 500;
+      border: none;
+    }
+    .scroll-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
+    .scroll-top:hover {
+      background: var(--c-teal-lt);
+      transform: translateY(-3px);
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 1100px) {
+      .hero__content        { grid-template-columns: 1fr; text-align: center; }
+      .hero__subtitle       { margin-left: auto; margin-right: auto; }
+      .hero__actions        { justify-content: center; }
+      .hero__stats          { justify-content: center; }
+      .hero__right          { display: none; }
+      .services__layout     { grid-template-columns: 1fr; }
+      .about__layout        { grid-template-columns: 1fr; }
+      .about__visual        { display: none; }
+      .team__grid           { grid-template-columns: repeat(2, 1fr); }
+      .gallery__grid        { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+      .gallery__item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+      .gallery__item:nth-child(4) { grid-column: span 1; }
+      .faq__layout          { grid-template-columns: 1fr; }
+      .faq__left            { position: static; }
+      .contact__layout      { grid-template-columns: 1fr; }
+      .contacts__grid       { grid-template-columns: repeat(2, 1fr); }
+      .footer__top          { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .navbar__nav          { display: none; }
+      .navbar__hamburger    { display: flex; }
+      .advantages__grid     { grid-template-columns: 1fr; }
+      .services__right      { grid-template-columns: 1fr; }
+      .team__grid           { grid-template-columns: 1fr 1fr; }
+      .reviews__grid        { grid-template-columns: 1fr; }
+      .contacts__grid       { grid-template-columns: 1fr 1fr; }
+      .contact__form-wrap   { padding: 28px 22px; }
+      .form-row             { grid-template-columns: 1fr; }
+      .form-group.full      { grid-column: span 1; }
+      .footer__top          { grid-template-columns: 1fr; }
+      .footer__bottom       { flex-direction: column; gap: 10px; text-align: center; }
+      .hero__stats          { gap: 20px; flex-wrap: wrap; }
+    }
+
+    @media (max-width: 480px) {
+      .contacts__grid       { grid-template-columns: 1fr; }
+      .team__grid           { grid-template-columns: 1fr; }
+      .about__numbers       { grid-template-columns: 1fr 1fr; }
+      .gallery__grid        { grid-template-columns: 1fr; }
+      .gallery__item:nth-child(1) { grid-column: span 1; }
+      .gallery__item:nth-child(4) { grid-column: span 1; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; }
+      .hero__float { animation: none; }
+      .hero__particle { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<header>
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Главная навигация">
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="#" class="navbar__logo" aria-label="MedVita — главная">
+          <div class="navbar__logo-icon" aria-hidden="true">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          MedVita
+        </a>
+        <ul class="navbar__nav" role="list">
+          <li><a href="#advantages">Преимущества</a></li>
+          <li><a href="#services">Услуги</a></li>
+          <li><a href="#team">Врачи</a></li>
+          <li><a href="#reviews">Отзывы</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Контакты</a></li>
+        </ul>
+        <a href="#contact" class="btn btn-primary navbar__cta">
+          <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+          Записаться
+        </a>
+        <button class="navbar__hamburger" id="hamburger" aria-label="Открыть меню" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu -->
+<nav class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Мобильное меню" aria-hidden="true">
+  <button class="mobile-close" id="mobileClose" aria-label="Закрыть меню">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <a href="#advantages" class="mobile-link">Преимущества</a>
+  <a href="#services"   class="mobile-link">Услуги</a>
+  <a href="#team"       class="mobile-link">Врачи</a>
+  <a href="#reviews"    class="mobile-link">Отзывы</a>
+  <a href="#faq"        class="mobile-link">FAQ</a>
+  <a href="#contact"    class="mobile-link">Контакты</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero" aria-label="Главный баннер">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__grid-pattern" aria-hidden="true"></div>
+  <div class="hero__particles" id="particles" aria-hidden="true"></div>
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="hero__content">
+      <div class="hero__left">
+        <div class="hero__badge">
+          <span class="hero__badge-dot" aria-hidden="true"></span>
+          Принимаем пациентов с 2005 года
+        </div>
+        <h1 class="hero__title">
+          Ваше здоровье —<br>
+          наш <em>главный</em><br>
+          приоритет
+        </h1>
+        <p class="hero__subtitle">
+          Премиальная медицина с индивидуальным подходом. Передовое оборудование,
+          опытные специалисты и комфортная атмосфера — всё для вашего выздоровления.
+        </p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn-primary">
+            <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+            Записаться на приём
+          </a>
+          <a href="#services" class="btn btn-outline">
+            <i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+            Наши услуги
+          </a>
+        </div>
+        <div class="hero__stats" aria-label="Показатели клиники">
+          <div class="hero__stat">
+            <div class="hero__stat-num">15<span>+</span></div>
+            <div class="hero__stat-label">лет опыта</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-num">48<span>+</span></div>
+            <div class="hero__stat-label">специалистов</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-num">32<span>k</span></div>
+            <div class="hero__stat-label">пациентов</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-num">98<span>%</span></div>
+            <div class="hero__stat-label">довольных</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__right" aria-hidden="true">
+        <div class="hero__card-wrap">
+          <div class="hero__img-card">
+            <div class="hero__img-placeholder">
+              <div class="hero__img-icon">
+                <i class="fa-solid fa-stethoscope"></i>
+              </div>
+              <div class="hero__img-text">Клиника MedVita</div>
+            </div>
+          </div>
+
+          <div class="hero__float hero__float-1">
+            <div class="hero__float-content">
+              <div class="hero__float-icon icon-teal">
+                <i class="fa-solid fa-shield-heart"></i>
+              </div>
+              <div>
+                <div class="hero__float-label">Безопасность</div>
+                <div class="hero__float-value">Сертифицировано</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero__float hero__float-2">
+            <div class="hero__float-content">
+              <div class="hero__float-icon icon-gold">
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <div>
+                <div class="hero__float-label">Рейтинг клиники</div>
+                <div class="hero__float-value">4.9 / 5.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ADVANTAGES ============ -->
+<section class="advantages" id="advantages" aria-labelledby="adv-title">
+  <div class="container">
+    <div class="advantages__head">
+      <div class="section-label">Почему выбирают нас</div>
+      <h2 class="section-title reveal" id="adv-title">
+        Медицина, которой <span>доверяют</span>
+      </h2>
+      <p class="section-sub reveal delay-1">
+        Мы объединяем передовые технологии, многолетний опыт врачей и искреннее
+        внимание к каждому пациенту.
+      </p>
+    </div>
+    <div class="advantages__grid">
+      <article class="adv-card reveal delay-1">
+        <div class="adv-card__icon" aria-hidden="true">
+          <i class="fa-solid fa-microscope"></i>
+        </div>
+        <h3 class="adv-card__title">Современное оборудование</h3>
+        <p class="adv-card__text">МРТ 3 Тесла, КТ 128 срезов, цифровая рентгенография и собственная лаборатория с результатами за 1 час.</p>
+      </article>
+      <article class="adv-card reveal delay-2">
+        <div class="adv-card__icon" aria-hidden="true">
+          <i class="fa-solid fa-user-doctor"></i>
+        </div>
+        <h3 class="adv-card__title">Опытные специалисты</h3>
+        <p class="adv-card__text">Наши врачи — кандидаты и доктора наук с международным опытом работы в ведущих клиниках Европы и США.</p>
+      </article>
+      <article class="adv-card reveal delay-3">
+        <div class="adv-card__icon" aria-hidden="true">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <h3 class="adv-card__title">Работаем 24/7</h3>
+        <p class="adv-card__text">Скорая помощь и неотложная хирургия доступны круглосуточно. Запись онлайн или по телефону в любое время.</p>
+      </article>
+      <article class="adv-card reveal delay-1">
+        <div class="adv-card__icon" aria-hidden="true">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3 class="adv-card__title">Конфиденциальность</h3>
+        <p class="adv-card__text">Строгое соблюдение врачебной тайны. Ваши данные защищены по стандарту ISO 27001 и не передаются третьим лицам.</p>
+      </article>
+      <article class="adv-card reveal delay-2">
+        <div class="adv-card__icon" aria-hidden="true">
+          <i class="fa-solid fa-hand-holding-heart"></i>
+        </div>
+        <h3 class="adv-card__title">Индивидуальный подход</h3>
+        <p class="adv-card__text">Каждый пациент получает персонализированный план лечения. Личный куратор сопровождает на всех этапах.</p>
+      </article>
+      <article class="adv-card reveal delay-3">
+        <div class="adv-card__icon" aria-hidden="true">
+          <i class="fa-solid fa-credit-card"></i>
+        </div>
+        <h3 class="adv-card__title">Прозрачные цены</h3>
+        <p class="adv-card__text">Никаких скрытых платежей. Все расходы согласовываются заранее. Принимаем страховку от 60+ компаний и ДМС.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="services" id="services" aria-labelledby="svc-title">
+  <div class="container">
+    <div class="services__layout">
+      <div class="services__left">
+        <div class="section-label">Направления</div>
+        <h2 class="section-title reveal" id="svc-title">
+          Полный спектр <span>медицинских</span> услуг
+        </h2>
+        <p class="section-sub reveal delay-1">
+          От диагностики до реабилитации — 28 специализаций под одной крышей.
+          Вам не нужно искать разных врачей.
+        </p>
+        <a href="#contact" class="btn btn-dark services__cta reveal delay-2">
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          Записаться на консультацию
+        </a>
+      </div>
+      <div class="services__right">
+        <article class="svc-card reveal delay-1">
+          <div class="svc-card__icon" aria-hidden="true"><i class="fa-solid fa-heart-pulse"></i></div>
+          <h3 class="svc-card__name">Кардиология</h3>
+          <p class="svc-card__desc">ЭКГ, ЭхоКГ, холтеровское мониторирование, лечение аритмий и сердечной недостаточности.</p>
+        </article>
+        <article class="svc-card reveal delay-2">
+          <div class="svc-card__icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></div>
+          <h3 class="svc-card__name">Неврология</h3>
+          <p class="svc-card__desc">Диагностика и лечение мигрени, инсульта, эпилепсии, нейропатий. МРТ и ЭЭГ на месте.</p>
+        </article>
+        <article class="svc-card reveal delay-3">
+          <div class="svc-card__icon" aria-hidden="true"><i class="fa-solid fa-bone"></i></div>
+          <h3 class="svc-card__name">Ортопедия</h3>
+          <p class="svc-card__desc">Суставы, позвоночник, травмы, протезирование. Малоинвазивная хирургия и реабилитация.</p>
+        </article>
+        <article class="svc-card reveal delay-1">
+          <div class="svc-card__icon" aria-hidden="true"><i class="fa-solid fa-eye"></i></div>
+          <h3 class="svc-card__name">Офтальмология</h3>
+          <p class="svc-card__desc">Лазерная коррекция зрения, лечение катаракты и глаукомы. Операции без разрезов.</p>
+        </article>
+        <article class="svc-card reveal delay-2">
+          <div class="svc-card__icon" aria-hidden="true"><i class="fa-solid fa-lungs"></i></div>
+          <h3 class="svc-card__name">Пульмонология</h3>
+          <p class="svc-card__desc">Астма, ХОБЛ, пневмония, апноэ сна. Спирометрия и бронхоскопия в день обращения.</p>
+        </article>
+        <article class="svc-card reveal delay-3">
+          <div class="svc-card__icon" aria-hidden="true"><i class="fa-solid fa-dna"></i></div>
+          <h3 class="svc-card__name">Эндокринология</h3>
+          <p class="svc-card__desc">Диабет, заболевания щитовидной железы, ожирение. Генетическое тестирование.</p>
+        </article>
+        <article class="svc-card reveal delay-1">
+          <div class="svc-card__icon" aria-hidden="true"><i class="fa-solid fa-baby"></i></div>
+          <h3 class="svc-card__name">Педиатрия</h3>
+          <p class="svc-card__desc">Наблюдение детей от рождения до 18 лет. Вакцинация, профосмотры, развитие.</p>
+        </article>
+        <article class="svc-card reveal delay-2">
+          <div class="svc-card__icon" aria-hidden="true"><i class="fa-solid fa-venus"></i></div>
+          <h3 class="svc-card__name">Гинекология</h3>
+          <p class="svc-card__desc">Ведение беременности, онкоскрининг, малоинвазивная хирургия. Круглосуточные роды.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery" id="gallery" aria-labelledby="gallery-title">
+  <div class="container">
+    <div class="gallery__head">
+      <div class="section-label">Наша клиника</div>
+      <h2 class="section-title reveal" id="gallery-title">
+        Пространство, созданное<br>для <span>комфорта</span>
+      </h2>
+      <p class="section-sub reveal delay-1">
+        Современные операционные, уютные палаты и просторные кабинеты —
+        мы думали о каждой детали.
+      </p>
+    </div>
+    <div class="gallery__grid reveal delay-1">
+      <div class="gallery__item">
+        <div class="gallery__item-inner">
+          <div class="gallery__item-icon"><i class="fa-solid fa-hospital"></i></div>
+        </div>
+        <div class="gallery__item-label"><span>Главный холл клиники</span></div>
+      </div>
+      <div class="gallery__item">
+        <div class="gallery__item-inner">
+          <div class="gallery__item-icon"><i class="fa-solid fa-microscope"></i></div>
+        </div>
+        <div class="gallery__item-label"><span>Диагностический центр</span></div>
+      </div>
+      <div class="gallery__item">
+        <div class="gallery__item-inner">
+          <div class="gallery__item-icon"><i class="fa-solid fa-bed-pulse"></i></div>
+        </div>
+        <div class="gallery__item-label"><span>Палаты стационара</span></div>
+      </div>
+      <div class="gallery__item">
+        <div class="gallery__item-inner">
+          <div class="gallery__item-icon"><i class="fa-solid fa-flask-vial"></i></div>
+        </div>
+        <div class="gallery__item-label"><span>Собственная лаборатория</span></div>
+      </div>
+      <div class="gallery__item">
+        <div class="gallery__item-inner">
+          <div class="gallery__item-icon"><i class="fa-solid fa-dumbbell"></i></div>
+        </div>
+        <div class="gallery__item-label"><span>Зал реабилитации</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about__layout">
+      <div class="about__visual reveal reveal-left">
+        <div class="about__img-main" aria-label="Изображение клиники">
+          <i class="fa-solid fa-hospital" aria-hidden="true"></i>
+        </div>
+        <div class="about__exp-badge" aria-label="20 лет опыта">
+          <div class="about__exp-num">20</div>
+          <div class="about__exp-text">лет опыта<br>в медицине</div>
+        </div>
+      </div>
+      <div class="about__content reveal reveal-right">
+        <div class="section-label">О клинике</div>
+        <h2 class="section-title" id="about-title">
+          История клиники, основанной на <span>доверии</span>
+        </h2>
+        <p class="section-sub">
+          Клиника MedVita была основана в 2005 году с одной целью — сделать высококачественную медицину
+          доступной каждому. За 20 лет мы стали одним из крупнейших медицинских центров региона.
+        </p>
+        <ul class="about__list" aria-label="Ключевые факты">
+          <li class="about__list-item">
+            <div class="about__list-icon" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+            <span>Аккредитация JCI — международный стандарт качества, который подтверждается каждые 3 года</span>
+          </li>
+          <li class="about__list-item">
+            <div class="about__list-icon" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+            <span>Член Европейской ассоциации больниц, партнёр клиник Германии и Израиля</span>
+          </li>
+          <li class="about__list-item">
+            <div class="about__list-icon" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+            <span>Собственный научно-исследовательский центр — мы участвуем в клинических испытаниях</span>
+          </li>
+          <li class="about__list-item">
+            <div class="about__list-icon" aria-hidden="true"><i class="fa-solid fa-check"></i></div>
+            <span>Ежегодно проводим более 3 000 операций с успешностью 99.2%</span>
+          </li>
+        </ul>
+        <div class="about__numbers" aria-label="Статистика клиники">
+          <div class="about__num-item">
+            <div class="about__num-val">3<span>k+</span></div>
+            <div class="about__num-label">операций в год</div>
+          </div>
+          <div class="about__num-item">
+            <div class="about__num-val">48<span>+</span></div>
+            <div class="about__num-label">специалистов</div>
+          </div>
+          <div class="about__num-item">
+            <div class="about__num-val">28<span></span></div>
+            <div class="about__num-label">направлений</div>
+          </div>
+          <div class="about__num-item">
+            <div class="about__num-val">99<span>%</span></div>
+            <div class="about__num-label">успех операций</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section class="team" id="team" aria-labelledby="team-title">
+  <div class="container">
+    <div class="team__head">
+      <div class="section-label">Наши врачи</div>
+      <h2 class="section-title reveal" id="team-title">Команда <span>экспертов</span></h2>
+      <p class="section-sub reveal delay-1">
+        Каждый из наших специалистов прошёл строгий отбор и обучение в лучших
+        клиниках мира.
+      </p>
+    </div>
+    <div class="team__grid">
+      <article class="team-card reveal delay-1">
+        <div class="team-card__photo" aria-label="Фото Алексея Владимирова">
+          <i class="fa-solid fa-user-doctor" aria-hidden="true"></i>
+          <div class="team-card__photo-overlay">
+            <a href="#" class="team-card__social-link" aria-label="LinkedIn профиль"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="team-card__social-link" aria-label="Личная страница"><i class="fa-solid fa-link"></i></a>
+          </div>
+        </div>
+        <div class="team-card__body">
+          <div class="team-card__name">Алексей Владимиров</div>
+          <div class="team-card__role">Главный кардиолог</div>
+          <div class="team-card__exp"><i class="fa-solid fa-briefcase" aria-hidden="true"></i>18 лет опыта · Д.м.н.</div>
+        </div>
+      </article>
+      <article class="team-card reveal delay-2">
+        <div class="team-card__photo" aria-label="Фото Елены Соколовой">
+          <i class="fa-solid fa-user-nurse" aria-hidden="true"></i>
+          <div class="team-card__photo-overlay">
+            <a href="#" class="team-card__social-link" aria-label="LinkedIn профиль"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="team-card__social-link" aria-label="Личная страница"><i class="fa-solid fa-link"></i></a>
+          </div>
+        </div>
+        <div class="team-card__body">
+          <div class="team-card__name">Елена Соколова</div>
+          <div class="team-card__role">Нейрохирург</div>
+          <div class="team-card__exp"><i class="fa-solid fa-briefcase" aria-hidden="true"></i>14 лет опыта · К.м.н.</div>
+        </div>
+      </article>
+      <article class="team-card reveal delay-3">
+        <div class="team-card__photo" aria-label="Фото Дмитрия Козлова">
+          <i class="fa-solid fa-user-doctor" aria-hidden="true"></i>
+          <div class="team-card__photo-overlay">
+            <a href="#" class="team-card__social-link" aria-label="LinkedIn профиль"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="team-card__social-link" aria-label="Личная страница"><i class="fa-solid fa-link"></i></a>
+          </div>
+        </div>
+        <div class="team-card__body">
+          <div class="team-card__name">Дмитрий Козлов</div>
+          <div class="team-card__role">Ортопед-хирург</div>
+          <div class="team-card__exp"><i class="fa-solid fa-briefcase" aria-hidden="true"></i>22 года опыта · Д.м.н.</div>
+        </div>
+      </article>
+      <article class="team-card reveal delay-4">
+        <div class="team-card__photo" aria-label="Фото Марины Ивановой">
+          <i class="fa-solid fa-user-nurse" aria-hidden="true"></i>
+          <div class="team-card__photo-overlay">
+            <a href="#" class="team-card__social-link" aria-label="LinkedIn профиль"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="team-card__social-link" aria-label="Личная страница"><i class="fa-solid fa-link"></i></a>
+          </div>
+        </div>
+        <div class="team-card__body">
+          <div class="team-card__name">Марина Иванова</div>
+          <div class="team-card__role">Эндокринолог</div>
+          <div class="team-card__exp"><i class="fa-solid fa-briefcase" aria-hidden="true"></i>11 лет опыта · К.м.н.</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="reviews" id="reviews" aria-labelledby="rev-title">
+  <div class="container">
+    <div class="reviews__head">
+      <div class="section-label">Отзывы пациентов</div>
+      <h2 class="section-title reveal" id="rev-title">Что говорят <span>о нас</span></h2>
+      <p class="section-sub reveal delay-1">
+        Мы гордимся доверием наших пациентов. Вот несколько историй, которыми они
+        поделились с нами.
+      </p>
+    </div>
+    <div class="reviews__track-wrap">
+      <div class="reviews__grid">
+        <article class="review-card reveal delay-1">
+          <span class="review-card__quote-icon" aria-hidden="true">"</span>
+          <div class="review-card__stars" aria-label="Оценка: 5 из 5">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-card__text">
+            После долгих лет проблем с сердцем я наконец нашла врача, которому
+            полностью доверяю. Алексей Владимиров объяснил всё доступно и назначил
+            лечение, которое действительно помогло. Клиника — высший класс.
+          </p>
+          <div class="review-card__author">
+            <div class="review-card__avatar" aria-hidden="true">МП</div>
+            <div>
+              <div class="review-card__name">Марина Петрова</div>
+              <div class="review-card__meta">Кардиология · апрель 2025</div>
+            </div>
+          </div>
+        </article>
+        <article class="review-card reveal delay-2">
+          <span class="review-card__quote-icon" aria-hidden="true">"</span>
+          <div class="review-card__stars" aria-label="Оценка: 5 из 5">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-card__text">
+            Операция на колене прошла блестяще. Уже через 3 недели я вернулся к
+            тренировкам. Команда Козлова работает как часы — от первой консультации до
+            выписки я чувствовал полную поддержку.
+          </p>
+          <div class="review-card__author">
+            <div class="review-card__avatar" aria-hidden="true">АС</div>
+            <div>
+              <div class="review-card__name">Андрей Смирнов</div>
+              <div class="review-card__meta">Ортопедия · март 2025</div>
+            </div>
+          </div>
+        </article>
+        <article class="review-card reveal delay-3">
+          <span class="review-card__quote-icon" aria-hidden="true">"</span>
+          <div class="review-card__stars" aria-label="Оценка: 5 из 5">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <p class="review-card__text">
+            Привезла ребёнка с острой болью. Нас приняли немедленно, всё объяснили
+            и успокоили. Педиатр — просто золото. Теперь наблюдаемся здесь всей
+            семьёй и рекомендуем всем знакомым.
+          </p>
+          <div class="review-card__author">
+            <div class="review-card__avatar" aria-hidden="true">НК</div>
+            <div>
+              <div class="review-card__name">Наталья Кузнецова</div>
+              <div class="review-card__meta">Педиатрия · февраль 2025</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="faq__layout">
+      <div class="faq__left reveal reveal-left">
+        <div class="section-label">Часто спрашивают</div>
+        <h2 class="section-title" id="faq-title">Ответы на <span>ваши</span> вопросы</h2>
+        <p class="section-sub">Не нашли ответ? Позвоните нам или напишите — ответим в течение 15 минут.</p>
+        <a href="tel:+78001234567" class="btn btn-primary" style="margin-top:28px;">
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
+          8 800 123-45-67
+        </a>
+      </div>
+      <div class="faq__right reveal reveal-right">
+        <div class="faq__list" role="list">
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-item__q" aria-expanded="false">
+              Как записаться на приём к врачу?
+              <span class="faq-item__icon" aria-hidden="true"><i class="fa-solid fa-plus"></i></span>
+            </button>
+            <div class="faq-item__a" role="region">
+              <div class="faq-item__a-inner">
+                Записаться можно несколькими способами: через форму на сайте, по телефону 8 800 123-45-67 (бесплатно, 24/7),
+                через мобильное приложение MedVita или лично в регистратуре. Первая консультация терапевта — бесплатно.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-item__q" aria-expanded="false">
+              Принимаете ли вы полис ОМС и ДМС?
+              <span class="faq-item__icon" aria-hidden="true"><i class="fa-solid fa-plus"></i></span>
+            </button>
+            <div class="faq-item__a" role="region">
+              <div class="faq-item__a-inner">
+                Да, мы работаем с большинством страховых компаний по ДМС. Список партнёров включает СберСтрахование, Ингосстрах, СОГАЗ, ВТБ Страхование и другие.
+                По ОМС принимаем в рамках выбранных направлений — уточните по телефону.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-item__q" aria-expanded="false">
+              Сколько времени занимает ожидание результатов анализов?
+              <span class="faq-item__icon" aria-hidden="true"><i class="fa-solid fa-plus"></i></span>
+            </button>
+            <div class="faq-item__a" role="region">
+              <div class="faq-item__a-inner">
+                Большинство анализов готовы в течение 1–2 часов в нашей собственной лаборатории. Общий анализ крови и мочи — 40 минут.
+                Результаты автоматически появляются в вашем личном кабинете и отправляются на email.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-item__q" aria-expanded="false">
+              Есть ли у вас стационар и палаты?
+              <span class="faq-item__icon" aria-hidden="true"><i class="fa-solid fa-plus"></i></span>
+            </button>
+            <div class="faq-item__a" role="region">
+              <div class="faq-item__a-inner">
+                Да, наш стационар рассчитан на 120 коек. Доступны одноместные, двухместные и VIP-палаты с полным оснащением.
+                Круглосуточный пост медсестёр, Wi-Fi, телевизор, кондиционер — для вашего комфорта во время лечения.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-item__q" aria-expanded="false">
+              Можно ли получить онлайн-консультацию?
+              <span class="faq-item__icon" aria-hidden="true"><i class="fa-solid fa-plus"></i></span>
+            </button>
+            <div class="faq-item__a" role="region">
+              <div class="faq-item__a-inner">
+                Да, телемедицина доступна через приложение MedVita и веб-сайт. Онлайн-консультации проводят более 30 специалистов.
+                Видеозвонок с врачом можно записать на ближайшее время или выбрать срочный формат в течение 30 минут.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-item__q" aria-expanded="false">
+              Как работает скорая помощь клиники?
+              <span class="faq-item__icon" aria-hidden="true"><i class="fa-solid fa-plus"></i></span>
+            </button>
+            <div class="faq-item__a" role="region">
+              <div class="faq-item__a-inner">
+                Наша скорая работает круглосуточно. Бригада выезжает в течение 8–12 минут в пределах города.
+                В машине — реанимационное оборудование и дефибриллятор. Вызов: 8 800 999-11-22 (бесплатно).
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT FORM ============ -->
+<section class="contact" id="contact" aria-labelledby="form-title">
+  <div class="contact__bg-orb" aria-hidden="true"></div>
+  <div class="container">
+    <div class="contact__layout">
+      <div class="contact__left reveal reveal-left">
+        <div class="section-label" style="color:var(--c-teal);">Запись онлайн</div>
+        <h2 class="section-title" id="form-title">
+          Запишитесь на<br>
+          <span>консультацию</span>
+        </h2>
+        <p class="section-sub">
+          Оставьте заявку — мы свяжемся в течение 15 минут и подберём удобное время.
+        </p>
+        <div class="contact__perks">
+          <div class="contact__perk">
+            <div class="contact__perk-icon" aria-hidden="true"><i class="fa-solid fa-phone-volume"></i></div>
+            <span>Перезвоним в течение 15 минут в рабочее время</span>
+          </div>
+          <div class="contact__perk">
+            <div class="contact__perk-icon" aria-hidden="true"><i class="fa-solid fa-shield-check"></i></div>
+            <span>Ваши данные защищены и не передаются третьим лицам</span>
+          </div>
+          <div class="contact__perk">
+            <div class="contact__perk-icon" aria-hidden="true"><i class="fa-solid fa-calendar-check"></i></div>
+            <span>Первичная консультация терапевта — бесплатно</span>
+          </div>
+          <div class="contact__perk">
+            <div class="contact__perk-icon" aria-hidden="true"><i class="fa-solid fa-clock"></i></div>
+            <span>Запись доступна на ближайшие 7 дней, включая выходные</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact__form-wrap reveal reveal-right">
+        <form id="bookingForm" novalidate aria-label="Форма записи на приём">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Имя *</label>
+              <input type="text" id="fname" name="fname" placeholder="Иван" required autocomplete="given-name" />
+            </div>
+            <div class="form-group">
+              <label for="lname">Фамилия *</label>
+              <input type="text" id="lname" name="lname" placeholder="Петров" required autocomplete="family-name" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Телефон *</label>
+              <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required autocomplete="tel" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="ivan@mail.ru" autocomplete="email" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="direction">Направление *</label>
+              <select id="direction" name="direction" required>
+                <option value="" disabled selected>Выберите специализацию</option>
+                <option>Терапия (первичный осмотр)</option>
+                <option>Кардиология</option>
+                <option>Неврология</option>
+                <option>Ортопедия</option>
+                <option>Офтальмология</option>
+                <option>Пульмонология</option>
+                <option>Эндокринология</option>
+                <option>Педиатрия</option>
+                <option>Гинекология</option>
+                <option>Скорая помощь</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="date">Удобная дата</label>
+              <input type="date" id="date" name="date" />
+            </div>
+          </div>
+          <div class="form-group full">
+            <label for="comment">Кратко опишите жалобы</label>
+            <textarea id="comment" name="comment" placeholder="Опишите симптомы или цель визита..."></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="formSubmit">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            Отправить заявку
+          </button>
+          <p class="form-note">
+            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+            Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACTS ============ -->
+<section class="contacts" id="contacts" aria-label="Контактная информация">
+  <div class="container">
+    <div class="contacts__grid">
+      <div class="contacts__card reveal delay-1">
+        <div class="contacts__card-icon" aria-hidden="true"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="contacts__card-label">Адрес</div>
+        <div class="contacts__card-val">ул. Академическая, 12</div>
+        <div class="contacts__card-sub">Москва, 117198</div>
+      </div>
+      <div class="contacts__card reveal delay-2">
+        <div class="contacts__card-icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></div>
+        <div class="contacts__card-label">Регистратура</div>
+        <div class="contacts__card-val"><a href="tel:+78001234567">8 800 123-45-67</a></div>
+        <div class="contacts__card-sub">Бесплатно, ежедневно 8:00–22:00</div>
+      </div>
+      <div class="contacts__card reveal delay-3">
+        <div class="contacts__card-icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></div>
+        <div class="contacts__card-label">Email</div>
+        <div class="contacts__card-val"><a href="mailto:info@medvita.ru">info@medvita.ru</a></div>
+        <div class="contacts__card-sub">Ответим в течение 2 часов</div>
+      </div>
+      <div class="contacts__card reveal delay-4">
+        <div class="contacts__card-icon" aria-hidden="true"><i class="fa-solid fa-clock"></i></div>
+        <div class="contacts__card-label">Режим работы</div>
+        <div class="contacts__card-val">Пн–Вс: 08:00–22:00</div>
+        <div class="contacts__card-sub">Скорая помощь: 24/7</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" aria-label="Нижний колонтитул">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div class="footer__brand-logo">
+          <div class="navbar__logo-icon" aria-hidden="true">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          MedVita
+        </div>
+        <p class="footer__brand-desc">
+          Клиника современной медицины с 2005 года. Международные стандарты,
+          индивидуальный подход, безопасность и комфорт.
+        </p>
+        <nav class="footer__socials" aria-label="Социальные сети">
+          <a href="#" class="footer__social" aria-label="ВКонтакте"><i class="fa-brands fa-vk"></i></a>
+          <a href="#" class="footer__social" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+          <a href="#" class="footer__social" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="footer__social" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </nav>
+      </div>
+      <div>
+        <div class="footer__col-title">Услуги</div>
+        <ul class="footer__links">
+          <li><a href="#services">Кардиология</a></li>
+          <li><a href="#services">Неврология</a></li>
+          <li><a href="#services">Ортопедия</a></li>
+          <li><a href="#services">Педиатрия</a></li>
+          <li><a href="#services">Все направления</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__col-title">Клиника</div>
+        <ul class="footer__links">
+          <li><a href="#about">О нас</a></li>
+          <li><a href="#team">Наши врачи</a></li>
+          <li><a href="#gallery">Фотогалерея</a></li>
+          <li><a href="#reviews">Отзывы</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__col-title">Контакты</div>
+        <ul class="footer__links">
+          <li><a href="tel:+78001234567">8 800 123-45-67</a></li>
+          <li><a href="tel:+78009991122">8 800 999-11-22 (СМП)</a></li>
+          <li><a href="mailto:info@medvita.ru">info@medvita.ru</a></li>
+          <li><a href="#contact">Записаться онлайн</a></li>
+          <li><a href="#">Личный кабинет</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 MedVita. Все права защищены.</span>
+      <span>
+        <a href="#" style="color:inherit;transition:color .3s;" onmouseover="this.style.color='var(--c-teal)'" onmouseout="this.style.color='inherit'">Политика конфиденциальности</a>
+        &nbsp;·&nbsp;
+        <a href="#" style="color:inherit;transition:color .3s;" onmouseover="this.style.color='var(--c-teal)'" onmouseout="this.style.color='inherit'">Пользовательское соглашение</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll to top -->
+<button class="scroll-top" id="scrollTop" aria-label="Прокрутить вверх">
+  <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+</button>
+
+<!-- ============ SCRIPTS ============ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Particles ---------- */
+  const particleContainer = document.getElementById('particles');
+  if (particleContainer) {
+    for (let i = 0; i < 24; i++) {
+      const p = document.createElement('span');
+      p.classList.add('hero__particle');
+      p.style.cssText = `
+        left: ${Math.random() * 100}%;
+        top: ${20 + Math.random() * 70}%;
+        width: ${2 + Math.random() * 4}px;
+        height: ${2 + Math.random() * 4}px;
+        animation-duration: ${5 + Math.random() * 8}s;
+        animation-delay: ${Math.random() * 6}s;
+        opacity: ${0.3 + Math.random() * 0.5};
+      `;
+      particleContainer.appendChild(p);
+    }
+  }
+
+  /* ---------- Navbar scroll ---------- */
+  const navbar = document.getElementById('navbar');
+  function handleNavbar() {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  }
+  window.addEventListener('scroll', handleNavbar, { passive: true });
+  handleNavbar();
+
+  /* ---------- Scroll reveal ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  /* ---------- Mobile menu ---------- */
+  const hamburger   = document.getElementById('hamburger');
+  const mobileMenu  = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+
+  function openMenu() {
+    mobileMenu.classList.add('open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  hamburger.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll('.faq-item__q').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const item   = this.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // close all
+      document.querySelectorAll('.faq-item.open').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-item__q').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  /* ---------- Scroll to top ---------- */
+  const scrollTopBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    scrollTopBtn.classList.toggle('visible', window.scrollY > 500);
+  }, { passive: true });
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ---------- Phone mask ---------- */
+  const phoneInput = document.getElementById('phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function () {
+      let v = this.value.replace(/\D/g, '');
+      if (v.startsWith('8')) v = '7' + v.slice(1);
+      if (!v.startsWith('7')) v = '7' + v;
+      v = v.slice(0, 11);
+      let out = '+7';
+      if (v.length > 1) out += ' (' + v.slice(1, 4);
+      if (v.length >= 5) out += ') ' + v.slice(4, 7);
+      if (v.length >= 8) out += '-' + v.slice(7, 9);
+      if (v.length >= 10) out += '-' + v.slice(9, 11);
+      this.value = out;
+    });
+  }
+
+  /* ---------- Date min ---------- */
+  const dateInput = document.getElementById('date');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+  }
+
+  /* ---------- Form submit ---------- */
+  const form       = document.getElementById('bookingForm');
+  const submitBtn  = document.getElementById('formSubmit');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const fname     = document.getElementById('fname').value.trim();
+      const phone_v   = document.getElementById('phone').value.trim();
+      const direction = document.getElementById('direction').value;
+
+      if (!fname || !phone_v || !direction) {
+        shake(submitBtn);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Отправляем...';
+
+      setTimeout(() => {
+        submitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Заявка принята! Ждите звонка';
+        submitBtn.style.background = '#16a34a';
+        form.querySelectorAll('input, select, textarea').forEach(i => i.disabled = true);
+      }, 1800);
+    });
+  }
+
+  function shake(el) {
+    el.style.animation = 'none';
+    el.offsetHeight; // reflow
+    el.style.animation = 'shakeForm .4s ease';
+    setTimeout(() => { el.style.animation = ''; }, 400);
+  }
+
+  /* ---------- Counter animation ---------- */
+  function animateCounter(el, end, suffix) {
+    const duration = 1800;
+    const start    = 0;
+    const step     = 16;
+    let current    = start;
+    const increment = end / (duration / step);
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= end) {
+        current = end;
+        clearInterval(timer);
+      }
+      el.textContent = Math.floor(current) + suffix;
+    }, step);
+  }
+
+  const counterEls = document.querySelectorAll('.hero__stat-num');
+  const counterData = [
+    { val: 15, suf: '+' },
+    { val: 48, suf: '+' },
+    { val: 32, suf: 'k' },
+    { val: 98, suf: '%' },
+  ];
+  let countersStarted = false;
+  const heroObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !countersStarted) {
+      countersStarted = true;
+      counterEls.forEach((el, i) => {
+        const span = el.querySelector('span');
+        el.textContent = '0';
+        if (span) el.appendChild(span);
+        animateCounter(el.childNodes[0] ? el : el, counterData[i].val, '');
+        if (span) span.textContent = counterData[i].suf;
+      });
+    }
+  }, { threshold: .5 });
+  if (counterEls.length) heroObs.observe(counterEls[0].closest('section') || document.body);
+})();
+</script>
+
+<style>
+@keyframes shakeForm {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-8px); }
+  40%      { transform: translateX(8px); }
+  60%      { transform: translateX(-5px); }
+  80%      { transform: translateX(5px); }
+}
+</style>
+
+</body>
+</html>
